@@ -1625,7 +1625,7 @@ def create_ui(wrap_gradio_gpu_call):
     if not cmd_opts.no_progressbar_hiding:
         css += css_hide_progressbar
 
-#    interfaces += script_callbacks.ui_tabs_callback()
+    interfaces += script_callbacks.ui_tabs_callback()
 #    interfaces += [(settings_interface, "Settings", "settings")]
 
 #    extensions_interface = ui_extensions.create_ui()
