@@ -708,7 +708,7 @@ def create_ui(wrap_gradio_gpu_call):
 
         with gr.Row().style(equal_height=False):
             with gr.Column(variant='panel'):
-                steps = gr.Slider(minimum=1, maximum=1, step=1, label="Sampling Steps", value=20)
+                steps = gr.Slider(minimum=1, maximum=30, step=1, label="Sampling Steps", value=20)
                 sampler_index = gr.Radio(label='Sampling method', elem_id="txt2img_sampling", choices=[x.name for x in samplers], value=samplers[0].name, type="index")
 
                 with gr.Group():
@@ -726,7 +726,7 @@ def create_ui(wrap_gradio_gpu_call):
                     denoising_strength = gr.Slider(minimum=0.0, maximum=1.0, step=0.01, label='Denoising strength', value=0.7)
 
                 with gr.Row(equal_height=True):
-                    batch_count = gr.Slider(minimum=1, step=1, label='Batch count', value=1)
+                    batch_count = gr.Slider(minimum=1, maximum=1, step=1, label='Batch count', value=1)
                     batch_size = gr.Slider(minimum=1, maximum=1, step=1, label='Batch size', value=1)
 
                 cfg_scale = gr.Slider(minimum=1.0, maximum=20.0, step=0.5, label='CFG Scale', value=7.0)
@@ -891,7 +891,7 @@ def create_ui(wrap_gradio_gpu_call):
                 with gr.Row():
                     resize_mode = gr.Radio(label="Resize mode", elem_id="resize_mode", show_label=False, choices=["Just resize", "Crop and resize", "Resize and fill"], type="index", value="Just resize")
 
-                steps = gr.Slider(minimum=1, maximum=1, step=1, label="Sampling Steps", value=20)
+                steps = gr.Slider(minimum=1, maximum=30, step=1, label="Sampling Steps", value=20)
                 sampler_index = gr.Radio(label='Sampling method', choices=[x.name for x in samplers_for_img2img], value=samplers_for_img2img[0].name, type="index")
 
                 with gr.Group():
@@ -903,7 +903,7 @@ def create_ui(wrap_gradio_gpu_call):
                     tiling = gr.Checkbox(label='Tiling', value=False)
 
                 with gr.Row():
-                    batch_count = gr.Slider(minimum=1, step=1, label='Batch count', value=1)
+                    batch_count = gr.Slider(minimum=1, maximum=1, step=1, label='Batch count', value=1)
                     batch_size = gr.Slider(minimum=1, maximum=1, step=1, label='Batch size', value=1)
 
                 with gr.Group():
