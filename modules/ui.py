@@ -1625,6 +1625,8 @@ def create_ui(wrap_gradio_gpu_call):
     interfaces += script_callbacks.ui_tabs_callback()
 
 
+    extensions_interface = ui_extensions.create_ui()
+
 
     with gr.Blocks(css=css, analytics_enabled=False, title="Stable Diffusion") as demo:
         with gr.Row(elem_id="quicksettings"):
