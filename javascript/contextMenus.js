@@ -123,53 +123,53 @@ contextMenuInit = function(){
   return [appendContextMenuOption, removeContextMenuOption, addContextMenuEventListener]
 }
 
-initResponse = contextMenuInit();
-appendContextMenuOption     = initResponse[0];
-removeContextMenuOption     = initResponse[1];
-addContextMenuEventListener = initResponse[2];
+#initResponse = contextMenuInit();
+#appendContextMenuOption     = initResponse[0];
+#removeContextMenuOption     = initResponse[1];
+#addContextMenuEventListener = initResponse[2];
 
-(function(){
+#(function(){
   //Start example Context Menu Items
-  let generateOnRepeat = function(genbuttonid,interruptbuttonid){
-    let genbutton = gradioApp().querySelector(genbuttonid);
-    let interruptbutton = gradioApp().querySelector(interruptbuttonid);
-    if(!interruptbutton.offsetParent){
-      genbutton.click();
-    }
-    clearInterval(window.generateOnRepeatInterval)
-    window.generateOnRepeatInterval = setInterval(function(){
-      if(!interruptbutton.offsetParent){
-        genbutton.click();
-      }
-    },
-    500)
-  }
+#  let generateOnRepeat = function(genbuttonid,interruptbuttonid){
+#    let genbutton = gradioApp().querySelector(genbuttonid);
+#    let interruptbutton = gradioApp().querySelector(interruptbuttonid);
+#    if(!interruptbutton.offsetParent){
+#      genbutton.click();
+#    }
+#    clearInterval(window.generateOnRepeatInterval)
+#    window.generateOnRepeatInterval = setInterval(function(){
+#      if(!interruptbutton.offsetParent){
+#        genbutton.click();
+#      }
+#    },
+#    500)
+#  }
+#
+#  appendContextMenuOption('#txt2img_generate','Generate forever',function(){
+#    generateOnRepeat('#txt2img_generate','#txt2img_interrupt');
+#  })
+#  appendContextMenuOption('#img2img_generate','Generate forever',function(){
+#    generateOnRepeat('#img2img_generate','#img2img_interrupt');
+#  })
 
-  appendContextMenuOption('#txt2img_generate','Generate forever',function(){
-    generateOnRepeat('#txt2img_generate','#txt2img_interrupt');
-  })
-  appendContextMenuOption('#img2img_generate','Generate forever',function(){
-    generateOnRepeat('#img2img_generate','#img2img_interrupt');
-  })
+#  let cancelGenerateForever = function(){ 
+#    clearInterval(window.generateOnRepeatInterval) 
+#  }
 
-  let cancelGenerateForever = function(){ 
-    clearInterval(window.generateOnRepeatInterval) 
-  }
+#  appendContextMenuOption('#txt2img_interrupt','Cancel generate forever',cancelGenerateForever)
+#  appendContextMenuOption('#txt2img_generate', 'Cancel generate forever',cancelGenerateForever)
+#  appendContextMenuOption('#img2img_interrupt','Cancel generate forever',cancelGenerateForever)
+#  appendContextMenuOption('#img2img_generate', 'Cancel generate forever',cancelGenerateForever)
 
-  appendContextMenuOption('#txt2img_interrupt','Cancel generate forever',cancelGenerateForever)
-  appendContextMenuOption('#txt2img_generate', 'Cancel generate forever',cancelGenerateForever)
-  appendContextMenuOption('#img2img_interrupt','Cancel generate forever',cancelGenerateForever)
-  appendContextMenuOption('#img2img_generate', 'Cancel generate forever',cancelGenerateForever)
-
-  appendContextMenuOption('#roll','Roll three',
-    function(){ 
-      let rollbutton = get_uiCurrentTabContent().querySelector('#roll');
-      setTimeout(function(){rollbutton.click()},100)
-      setTimeout(function(){rollbutton.click()},200)
-      setTimeout(function(){rollbutton.click()},300)
-    }
-  )
-})();
+#  appendContextMenuOption('#roll','Roll three',
+#    function(){ 
+#      let rollbutton = get_uiCurrentTabContent().querySelector('#roll');
+#      setTimeout(function(){rollbutton.click()},100)
+#      setTimeout(function(){rollbutton.click()},200)
+#      setTimeout(function(){rollbutton.click()},300)
+#    }
+#  )
+#})();
 //End example Context Menu Items
 
 onUiUpdate(function(){
