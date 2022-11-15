@@ -1603,8 +1603,107 @@ def create_ui(wrap_gradio_gpu_call):
     interfaces = [
         (txt2img_interface, "txt2img", "txt2img"),
         (img2img_interface, "img2img", "img2img"),
+   #     (extras_interface, "Extras", "extras"),
         (pnginfo_interface, "PNG Info", "pnginfo"),
+   #     (modelmerger_interface, "Checkpoint Merger", "modelmerger"),
+   #     (train_interface, "Train", "ti"),
     ]
+
+    css = ""
+
+    for cssfile in modules.scripts.list_files_with_name("style.css"):
+        if not os.path.isfile(cssfile):
+            continue
+
+        with open(cssfile, "r", encoding="utf8") as file:
+            css += file.read() + "\n"
+
+    if os.path.exists(os.path.join(script_path, "user.css")):
+        with open(os.path.join(script_path, "user.css"), "r", encoding="utf8") as file:
+            css += file.read() + "\n"
+
+    if not cmd_opts.no_progressbar_hiding:
+        css += css_hide_progressbar
+
+#    interfaces += script_callbacks.ui_tabs_callback()
+#    interfaces += [(settings_interface, "Settings", "settings")]
+
+#    extensions_interface = ui_extensions.create_ui()
+#    interfaces += [(extensions_interface, "Extensions", "extensions")]
+
+    with gr.Blocks(css=css, analytics_enabled=False, title="Stable Diffusion") as demo:
+        with gr.Row(elem_id="quicksettings"):
+            for i, k, item in quicksettings_list:
+                component = create_setting_component(k, is_quicksettings=True)
+                component_dict[k] = component
+
+        parameters_copypaste.integrate_settings_paste_fields(component_dict)
+        parameters_copypaste.run_bind()
+
+        with gr.Tabs(elem_id="tabs") as tabs:
+            for interface, label, ifid in interfaces:
+                with gr.TabItem(label, id=ifid, elem_id='tab_' + ifid):
+                    interface.render()
+
+        if os.path.exists(os.path.join(script_path, "notification.mp3")):
+            audio_notification = gr.Audio(interactive=False, value=os.path.join(script_path, "notification.mp3"), elem_id="audio_notification", visible=False)
+
+        text_settings = gr.Textbox(elem_id="settings_json", value=lambda: opts.dumpjson(), visible=False)
+        settings_submit.click(
+            fn=wrap_gradio_call(run_settings, extra_outputs=[gr.update()]),
+            inputs=components,
+            outputs=[text_settings, result],
+        )
+
+        for i, k, item in quicksettings_list:
+            component = component_dict[k]
+
+            component.change(
+                fn=lambda value, k=k: run_settings_single(value, key=k),
+                inputs=[component],
+                outputs=[component, text_settings],
+            )
+
+        component_keys = [k for k in opts.data_labels.keys() if k in component_dict]
+
+        def get_settings_values():
+            return [getattr(opts, key) for key in component_keys]
+
+        demo.load(
+            fn=get_settings_values,
+            inputs=[],
+            outputs=[component_dict[k] for k in component_keys],
+        )
+
+        def modelmerger(*args):
+            try:
+                results = modules.extras.run_modelmerger(*args)
+            except Exception as e:
+                print("Error loading/saving model file:", file=sys.stderr)
+                print(traceback.format_exc(), file=sys.stderr)
+                modules.sd_models.list_models()  # to remove the potentially missing models from the list
+                return ["Error loading/saving model file. It doesn't exist or the name contains illegal characters"] + [gr.Dropdown.update(choices=modules.sd_models.checkpoint_tiles()) for _ in range(3)]
+            return results
+
+        modelmerger_merge.click(
+            fn=modelmerger,
+            inputs=[
+                primary_model_name,
+                secondary_model_name,
+                tertiary_model_name,
+                interp_method,
+                interp_amount,
+                save_as_half,
+                custom_name,
+            ],
+            outputs=[
+                submit_result,
+                primary_model_name,
+                secondary_model_name,
+                tertiary_model_name,
+                component_dict['sd_model_checkpoint'],
+            ]
+        )
 
     ui_config_file = cmd_opts.ui_config_file
     ui_settings = {}
