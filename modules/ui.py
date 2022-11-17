@@ -713,7 +713,7 @@ def create_ui(wrap_gradio_gpu_call):
 
                 with gr.Group():
                     width = gr.Slider(minimum=64, maximum=1024, step=64, label="Width", value=512)
-                    height = gr.Slider(minimum=64, maximum=1024, step=64, label="Height", value=512)
+                    height = gr.Slider(minimum=64, maximum=1024, step=64, label="Height", value=768)
 
                 with gr.Row():
                     restore_faces = gr.Checkbox(label='Restore faces', value=False, visible=len(shared.face_restorers) > 1)
@@ -729,7 +729,7 @@ def create_ui(wrap_gradio_gpu_call):
                     batch_count = gr.Slider(minimum=1, maximum=1, step=1, label='Batch count', value=1)
                     batch_size = gr.Slider(minimum=1, maximum=1, step=1, label='Batch size', value=1)
 
-                cfg_scale = gr.Slider(minimum=1.0, maximum=20.0, step=0.5, label='CFG Scale', value=7.0)
+                cfg_scale = gr.Slider(minimum=1.0, maximum=20.0, step=0.5, label='CFG Scale', value=10.0)
 
                 seed, reuse_seed, subseed, reuse_subseed, subseed_strength, seed_resize_from_h, seed_resize_from_w, seed_checkbox = create_seed_inputs()
 
@@ -896,7 +896,7 @@ def create_ui(wrap_gradio_gpu_call):
 
                 with gr.Group():
                     width = gr.Slider(minimum=64, maximum=1024, step=64, label="Width", value=512, elem_id="img2img_width")
-                    height = gr.Slider(minimum=64, maximum=1024, step=64, label="Height", value=512, elem_id="img2img_height")
+                    height = gr.Slider(minimum=64, maximum=1024, step=64, label="Height", value=768, elem_id="img2img_height")
 
                 with gr.Row():
                     restore_faces = gr.Checkbox(label='Restore faces', value=False, visible=len(shared.face_restorers) > 1)
@@ -907,7 +907,7 @@ def create_ui(wrap_gradio_gpu_call):
                     batch_size = gr.Slider(minimum=1, maximum=1, step=1, label='Batch size', value=1)
 
                 with gr.Group():
-                    cfg_scale = gr.Slider(minimum=1.0, maximum=20.0, step=0.5, label='CFG Scale', value=7.0)
+                    cfg_scale = gr.Slider(minimum=1.0, maximum=20.0, step=0.5, label='CFG Scale', value=10.0)
                     denoising_strength = gr.Slider(minimum=0.0, maximum=1.0, step=0.01, label='Denoising strength', value=0.75)
 
                 seed, reuse_seed, subseed, reuse_subseed, subseed_strength, seed_resize_from_h, seed_resize_from_w, seed_checkbox = create_seed_inputs()
