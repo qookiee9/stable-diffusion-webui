@@ -1602,7 +1602,7 @@ def create_ui(wrap_gradio_gpu_call):
 
     interfaces = [
         (txt2img_interface, "txt2img", "txt2img"),
-        (img2img_interface, "img2img", "img2img"),
+   #     (img2img_interface, "img2img", "img2img"),
    #     (extras_interface, "Extras", "extras"),
         (pnginfo_interface, "PNG Info", "pnginfo"),
    #     (modelmerger_interface, "Checkpoint Merger", "modelmerger"),
